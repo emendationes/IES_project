@@ -9,7 +9,7 @@ from app.entities.processed_agent_data import ProcessedAgentData
 from app.interfaces.store_gateway import StoreGateway
 import datetime
 
-def convert_to_dick(data: ProcessedAgentData) -> dict:
+def convert_to_dict(data: ProcessedAgentData) -> dict:
     data_dict = data.model_dump()
     
     for key, value in data_dict.items():
@@ -28,7 +28,7 @@ class StoreApiAdapter(StoreGateway):
 
     def save_data(self, processed_agent_data_batch: List[ProcessedAgentData]) -> bool:
         
-        data_to_save = [convert_to_dick(data) for data in processed_agent_data_batch] 
+        data_to_save = [convert_to_dict(data) for data in processed_agent_data_batch] 
         try:
             
             response = requests.post(
