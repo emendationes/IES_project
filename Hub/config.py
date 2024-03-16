@@ -19,9 +19,10 @@ REDIS_PORT = try_parse_int(os.environ.get("REDIS_PORT")) or 6379
 
 # Configure for hub logic
 BATCH_SIZE = try_parse_int(os.environ.get("BATCH_SIZE")) or 20
-USER_ID = try_parse_int(os.environ.get("USER_ID")) or 3
 
 # MQTT
 MQTT_BROKER_HOST = os.environ.get("MQTT_BROKER_HOST") or "localhost"
 MQTT_BROKER_PORT = try_parse_int(os.environ.get("MQTT_BROKER_PORT")) or 1883
-MQTT_TOPIC = os.environ.get("MQTT_TOPIC") or "processed_agent_data_topic"
+
+AGENT_MQTT_TOPIC = os.environ.get("MQTT_AGENT_TOPIC") or "unprocessed_agent_data_topic"
+HUB_MQTT_TOPIC =  os.environ.get("MQTT_HUB_TOPIC") or "processed_agent_data_topic"

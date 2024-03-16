@@ -20,12 +20,12 @@ class DataSource:
         self.iters = [0 for name in self.names]
         self.data = [[] for name in self.names]
 
-    def read(self) -> ProcessedAgentData:
+    def read(self) -> AgentData:
         res = AgentData(
             accelerometer = AccelerometerData(x = 1, y = 2, z = 3),
             gps = GpsData(longitude = 4, latitude = 5),
             timestamp = datetime.now(),
-            user_id = config.USER_ID,
+            user_id = 2,
         )
         for i, builder in enumerate([AccelerometerData,GpsData]):
             if i == 0:
@@ -33,8 +33,7 @@ class DataSource:
             if i == 1:
                 res.gps=builder(longitude = self.data[i][self.iters[i]][0],latitude = self.data[i][self.iters[i]][1]) or builder(longitude = 0,latitude = 0)
             self.iters[i]=self.iters[i]+1 if self.iters[i] < (len(self.data[i]) - 1) else 0
-        data_unit = ProcessedAgentData(agent_data=res,road_state="OK")
-        return data_unit
+        return res
 
     def startReading(self, *args, **kwargs):
         

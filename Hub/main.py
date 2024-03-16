@@ -12,7 +12,8 @@ from config import (
     REDIS_HOST,
     REDIS_PORT,
     BATCH_SIZE,
-    MQTT_TOPIC,
+    AGENT_MQTT_TOPIC,
+    HUB_MQTT_TOPIC,
     MQTT_BROKER_HOST,
     MQTT_BROKER_PORT,
 )
@@ -61,7 +62,7 @@ client = mqtt.Client()
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         logging.info("Connected to MQTT broker")
-        client.subscribe(MQTT_TOPIC)
+        client.subscribe(HUB_MQTT_TOPIC)
     else:
         logging.info(f"Failed to connect to MQTT broker with code: {rc}")
 
@@ -97,7 +98,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.connect(MQTT_BROKER_HOST, MQTT_BROKER_PORT)
 source = DataSource(accelerometer_filename="./data/accelerometer.csv",gps_filename="./data/gps.csv")
-start_constant_publish_to_client(src=source,client=client,topic = MQTT_TOPIC)
+start_constant_publish_to_client(src=source,client=client,topic = AGENT_MQTT_TOPIC)
 
 # Start
 client.loop_start()

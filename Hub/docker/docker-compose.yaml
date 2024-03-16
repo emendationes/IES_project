@@ -13,7 +13,23 @@ services:
       - 9001:9001
     networks:
       mqtt_network:
-
+  
+  edge:
+    container_name: edge
+    build: ../../Edge
+    depends_on:
+      - mqtt
+    environment:
+      MQTT_BROKER_HOST: "mqtt"
+      MQTT_BROKER_PORT: 1883
+      MQTT_AGENT_TOPIC: "raw_data_topic"
+      HUB_HOST: "store"
+      HUB_PORT: 8000
+      HUB_MQTT_BROKER_HOST: "mqtt"
+      HUB_MQTT_BROKER_PORT: 1883
+      HUB_MQTT_TOPIC: "processed_data_topic"
+    networks:
+      mqtt_network:
 
   postgres_db:
     image: postgres:latest
@@ -90,6 +106,8 @@ services:
       MQTT_BROKER_HOST: "mqtt"
       MQTT_BROKER_PORT: 1883
       MQTT_TOPIC: "processed_data_topic"
+      MQTT_HUB_TOPIC: "processed_data_topic"
+      MQTT_AGENT_TOPIC: "raw_data_topic"
       BATCH_SIZE: 10
     ports:
       - "9000:8000"
@@ -104,6 +122,7 @@ networks:
   db_network:
   hub_store:
   hub_redis:
+  hub:
 
 
 volumes:
